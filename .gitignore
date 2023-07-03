@@ -1,2 +1,5 @@
 .idea
 test.py
+.vscode
+proxy_lists
+tests
