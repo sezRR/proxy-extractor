@@ -1,3 +1,4 @@
+import cProfile
 import logging
 
 import requests
@@ -44,13 +45,14 @@ proxy_list_socks5 = []
 working_proxy_count = 0
 working_proxies = []
 
-with open("proxy_lists/proxies.csv", "r") as f:
-    reader = csv.reader(f)
-    for row in reader:
-        proxy_list_http.append(row[1])
-        proxy_list_socks4.append(f"socks4://{row[2]}")
-        proxy_list_socks5.append(f"socks5://{row[3]}")
+# with open("proxy_lists/proxies.csv", "r") as f:
+#     reader = csv.reader(f)
+#     for row in reader:
+#         proxy_list_http.append(row[1])
+#         proxy_list_socks4.append(f"socks4://{row[2]}")
+#         proxy_list_socks5.append(f"socks5://{row[3]}")
 
+test1 = '''
 with open("proxy_lists/http_proxies.txt", "r") as f:
     reader = csv.reader(f)
     for row in reader:
@@ -71,23 +73,30 @@ with open("proxy_lists/proxy_list_two.txt", "r") as f:
     for row in reader:
         proxy_list_http_two.append(row[0])
 
-FORMAT = '%(message)s'
+print("DONE")
+'''
 
-logging.basicConfig(level=logging.INFO,
-                    format=FORMAT)
+if __name__ == "__main__":
+    cProfile.run(test1)
 
-file_handler = logging.FileHandler('working_proxy.log')
-file_handler.setFormatter(logging.Formatter(FORMAT))
-logging.getLogger().addHandler(file_handler)
 
-print(f"Total proxy: {len(proxy_list_http) + len(proxy_list_http_two) + len(proxy_list_http_two) + len(proxy_list_socks4) + len(proxy_list_socks5)}")
+# FORMAT = '%(message)s'
 
-with concurrent.futures.ThreadPoolExecutor() as executor:
-    executor.map(extract, proxy_list_http)
-    executor.map(extract, proxy_list_http_two)
-    executor.map(extract, proxy_list_http_other)
-    executor.map(extract, proxy_list_socks4)
-    executor.map(extract, proxy_list_socks5)
+# logging.basicConfig(level=logging.INFO,
+#                     format=FORMAT)
 
-print(f"Working proxy with SSL: {working_proxy_count}")
-print(working_proxies)
+# file_handler = logging.FileHandler('working_proxy.log')
+# file_handler.setFormatter(logging.Formatter(FORMAT))
+# logging.getLogger().addHandler(file_handler)
+
+# print(f"Total proxy: {len(proxy_list_http) + len(proxy_list_http_two) + len(proxy_list_http_two) + len(proxy_list_socks4) + len(proxy_list_socks5)}")
+
+# with concurrent.futures.ThreadPoolExecutor() as executor:
+#     executor.map(extract, proxy_list_http)
+#     executor.map(extract, proxy_list_http_two)
+#     executor.map(extract, proxy_list_http_other)
+#     executor.map(extract, proxy_list_socks4)
+#     executor.map(extract, proxy_list_socks5)
+
+# print(f"Working proxy with SSL: {working_proxy_count}")
+# print(working_proxies)
