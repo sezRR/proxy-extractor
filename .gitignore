@@ -3,3 +3,4 @@ test.py
 .vscode
 proxy_lists
 tests
+config.ini
