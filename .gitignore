@@ -4,3 +4,4 @@ test.py
 proxy_lists
 tests
 config.ini
+__pycache__
