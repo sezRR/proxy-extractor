@@ -4,6 +4,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import os
+from business_rule import BusinessRule
+from exception_handler import ExceptionHandler
 
 
 class Extractor:
@@ -11,9 +13,10 @@ class Extractor:
 
     def __init__(self) -> None:
         self.__config = self.__initialize_config()
+        self.__exceptionHandler = ExceptionHandler()
 
-        self.write_data_file_path = self.__get_write_data_file_path()
-        self.read_data_file_path = self.__get_read_data_file_path()
+        self.__write_data_file_path = self.__get_write_data_file_path()
+        self.__read_data_file_path = self.__get_read_data_file_path()
 
     def __initialize_config(self) -> ConfigParser:
         config = ConfigParser(interpolation=ExtendedInterpolation())
@@ -66,26 +69,23 @@ class Extractor:
         for future in as_completed(proxy_extractor_responses):
             return list(set(future.result()))  # type: ignore
 
-    def __write_data_to_file(self, proxies: list[str]):
-        with open(Path(str(self.write_data_file_path)), "w") as f:
-            for proxy in proxies:
-                f.write(proxy+"\n")
+    def __write_data_to_file(self, proxies: list[str]) -> bool:
+        try:
+            with open(Path(str(self.__write_data_file_path)), "w") as f:
+                for proxy in proxies:
+                    f.write(proxy+"\n")
+        except:
+            return False
 
-    def extract(self):
-        if BusinessRule.write_data_file_need_to_be_does_not_exist_to_write(self.write_data_file_path) is False:
-            return
+        return True
 
-        filenames = [self.read_data_file_path]
+    def extract(self) -> list[str]:
+        if BusinessRule.write_data_file_need_to_be_does_not_exist_to_write(self.__write_data_file_path) is False:
+            return np.loadtxt(self.__write_data_file_path, dtype=str).tolist()
+
+        filenames = [self.__read_data_file_path]
         proxies: list[str] = self.__separate_files(filenames)
 
         self.__write_data_to_file(proxies)
 
-
-class BusinessRule:
-    @staticmethod
-    def write_data_file_need_to_be_does_not_exist_to_write(write_data_file_path: str) -> bool:
-        if os.path.exists(write_data_file_path):
-            print("Destination file was already created.")
-            return False
-
-        return True
+        return proxies
