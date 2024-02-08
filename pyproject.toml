@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "proxy-extractor"
+version = "0.1.0"
+description = ""
+authors = ["Sezer Tetik <sezer.tetik2005@gmail.com>"]
+readme = "README.md"
+packages = [{include = "proxy_extractor", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+colorama = "^0.4.6"
+requests = "^2.31.0"
+numpy = "^1.26.4"
+pandas = "^2.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
