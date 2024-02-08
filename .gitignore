@@ -1,0 +1,8 @@
+src/proxy_extractor/.idea
+test.py
+.vscode
+proxy_lists
+tests
+config.ini
+__pycache__
+.venv/
