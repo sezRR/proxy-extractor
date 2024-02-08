@@ -44,6 +44,7 @@ def simulate():
                 return
 
 
+# TODO: config file
 # cProfile.run("simulate()")
 # 44528 function calls (44526 primitive calls) in 2.011 seconds | with 10 threads (with creating proxies.log file)
 # 28654 function calls (28652 primitive calls) in 0.654 seconds | with 3 threads (with creating proxies.log file)
